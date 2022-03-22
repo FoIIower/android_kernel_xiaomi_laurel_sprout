@@ -1,0 +1,39 @@
+name: Build LineageOS Extended Kernel
+
+on:
+  workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout kernel source
+      uses: actions/checkout@v2
+
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+
+    - name: Checkout zipper
+      uses: actions/checkout@v2
+      with:
+        repository: FoIIower/AnyKernel3
+        path: zipper
+
+    - name: Android kernel build
+      uses: FoIIower/android-kernel-actions@release_silent
+      id: build
+      env:
+        NAME: LineageOS
+      with:
+        arch: arm64
+        compiler: gcc/8
+        defconfig: laurel_sprout-extended_defconfig
+        image: Image.gz-dtb
+
+    - name: Release build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Release ZIP
+        path: |
+          ${{ github.workspace }}/zipper/release.zip
+          ${{ github.workspace }}/zipper/Image.gz-dtb
