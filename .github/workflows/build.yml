@@ -16,11 +16,11 @@ jobs:
     - name: Checkout zipper
       uses: actions/checkout@v2
       with:
-        repository: FoIIower/AnyKernel3
+        repository: udhcpc/AnyKernel3
         path: zipper
 
     - name: Android kernel build
-      uses: FoIIower/android-kernel-actions@release_silent
+      uses: udhcpc/android-kernel-actions@release_silent
       id: build
       env:
         NAME: LineageOS
